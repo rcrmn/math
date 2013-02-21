@@ -15,7 +15,7 @@ class quaternion
 	public:
 
 		static quaternion fromAngleAxis(double a, double x, double y, double z);
-		static quaternion fromAngleAxis(double a, const v3d& axis) { return fromAngleAxis(a, axis.x, axis.y, axis.z); }
+		static inline quaternion fromAngleAxis(double a, const v3d& axis) { return fromAngleAxis(a, axis.x, axis.y, axis.z); }
 
 	public:
 		union {
@@ -49,7 +49,7 @@ class quaternion
 		quaternion& operator*= (double d) { w *= d; x *= d; y *= d; z *= d; return *this; }
 		quaternion& operator/= (double d) { (*this) *= 1/d; return *this; }
 
-		quaternion operator~ () { quaternion a(*this); a.x = -a.x; a.y = -a.y; a.z = -a.z; return a; }
+		quaternion operator~ () const { quaternion a(*this); a.x = -a.x; a.y = -a.y; a.z = -a.z; return a; }
 		void conjugate() { (*this) = ~(*this); }
 
 		double norm() const;
@@ -65,6 +65,7 @@ class quaternion
 
 inline quaternion operator+ (quaternion a, const quaternion& b) { a+=b; return a; }
 inline quaternion operator- (quaternion a, const quaternion& b) { a-=b; return a; }
+inline quaternion operator- (const quaternion& a) { return quaternion(-a.w, -a.x, -a.y, -a.z); }
 inline quaternion operator* (quaternion a, const quaternion& b) { a*=b; return a; }
 
 inline double dot(const quaternion& a, const quaternion& b) { return a.w*b.w + a.x*b.x + a.y*b.y + a.z*b.z; }

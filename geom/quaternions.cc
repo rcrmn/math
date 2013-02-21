@@ -64,9 +64,10 @@ quaternion quaternion::fromAngleAxis(double a, double x, double y, double z)
 	double c = cos(a);
 	double s = sin(a);
 	v3d v(x, y, z);
-	v.normalize();
 	v *= s;
-	return quaternion(c, v.x, v.y, v.z);
+	quaternion q(c, v.x, v.y, v.z);
+	q.normalize();
+	return q;
 }
 
 
@@ -94,6 +95,7 @@ void dualquat::normalize()
 
 void dualquat::invert()
 {
+	/** TODO: Is it really? **/
 	double n = r.norm();
 	double rdd = dot(r, d);
 
@@ -104,13 +106,20 @@ void dualquat::invert()
 	d *= n - 2*rdd;
 }
 
+dualquat dualquat::conjugate() const
+{
+	return dualquat(~r, -(~d));
+}
+
 
 v3d dualquat::transform(const v3d& p) const
 {
 	dualquat inv(*this);
-	inv.invert();
+	//inv.invert();
+	inv = inv.conjugate();
 
 	dualquat dpos(quaternion(1, 0, 0, 0), quaternion(p));
+	//dpos = ((*this) * dpos) * inv;
 	dpos = ((*this) * dpos) * inv;
 
 	return v3d(dpos.d.x, dpos.d.y, dpos.d.z);
@@ -122,13 +131,45 @@ v3d dualquat::rotateVector(const v3d& v) const
 }
 
 
-dualquat dualquat::translatedRotation(const v3d& translation, const v3d& rotationAxis, double angle)
+
+dualquat dualquat::translate(const v3d& translation)
 {
 	dualquat ret;
-	ret.r = quaternion::fromAngleAxis(angle, rotationAxis);
+	ret.r = quaternion(1, 0, 0, 0);
 	ret.d = quaternion(0, translation.x/2, translation.y/2, translation.z/2);
 	return ret;
 }
+
+dualquat dualquat::rotate(const v3d& rotationAxis, double angle)
+{
+	dualquat ret;
+	ret.r = quaternion::fromAngleAxis(angle, rotationAxis);
+	ret.d = quaternion();
+	return ret;
+}
+
+dualquat dualquat::translateThenRotate(const v3d& translation, const v3d& rotationAxis, double angle)
+{
+	dualquat ret = dualquat::rotate(rotationAxis, angle);
+	ret *= dualquat::translate(translation);
+	return ret;
+}
+
+
+dualquat dualquat::rotateThenTranslate(const v3d& translation, const v3d& rotationAxis, double angle)
+{
+	dualquat ret = dualquat::translate(translation);
+	ret *= dualquat::rotate(rotationAxis, angle);
+	return ret;
+}
+
+
+dualquat dualquat::rotateAboutPoint(const v3d& center, const v3d& rotationAxis, double angle)
+{
+	dualquat t = dualquat::translate(center);
+	return (t * dualquat::rotate(rotationAxis, angle)) * (~t);
+}
+
 
 
 m4x4d dualquat::getMatrix() const

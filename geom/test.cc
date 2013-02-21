@@ -2,7 +2,7 @@
 #include "m3x3d.h"
 //#include "m4x4d.h"
 #include "quaternion.h"
-//#include "dualquat.h"
+#include "dualquat.h"
 
 #include <iostream>
 
@@ -72,6 +72,36 @@ int main(int argc, char** argv)
 	cout << (q1*q1) << endl;
 	
 	cout << q3.rotateVector(a) << endl;
+
+	{
+#define k 0.5
+
+		v3d a(1, 0, 0);
+
+		cout << "---------" << endl;
+
+		cout << a << endl;
+
+		dualquat dq = dualquat::translate(v3d(1, 0, 0));
+
+		cout << "T: " << dq.transform(a) << endl;
+
+		dq = dualquat::rotate(v3d(0, 0, 1), k*3.141592);
+
+		cout << "R: " << dq.transform(a) << endl;
+
+		dq = dualquat::translateThenRotate(v3d(1, 0, 0), v3d(0, 0, 1), k*3.141592);
+
+		cout << "T+R: " << dq.transform(a) << endl;
+
+		dq = dualquat::rotateThenTranslate(v3d(1, 0, 0), v3d(0, 0, 1), k*3.141592);
+
+		cout << "R+T: " << dq.transform(a) << endl;
+
+		dq = dualquat::rotateAboutPoint(v3d(-1, 0, 0), v3d(0, 0, 1), k*3.141592);
+
+		cout << "R(c): " << dq.transform(a) << endl;
+	}
 
 	return 0;
 }

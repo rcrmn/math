@@ -15,14 +15,14 @@ using namespace math;
  *
  * ***************************/
 
-double quaternion::norm() const
+math_float_t quaternion::norm() const
 {
 	return sqrt(w*w + x*x + y*y + z*z);
 }
 
 void quaternion::normalize()
 {
-	double n = norm();
+	math_float_t n = norm();
 
 	if(fabs(n) < 0.000001)
 	{
@@ -58,11 +58,11 @@ void quaternion::invert()
 }
 
 
-quaternion quaternion::fromAngleAxis(double a, double x, double y, double z)
+quaternion quaternion::fromAngleAxis(math_float_t a, math_float_t x, math_float_t y, math_float_t z)
 {
 	a *= 0.5;
-	double c = cos(a);
-	double s = sin(a);
+	math_float_t c = cos(a);
+	math_float_t s = sin(a);
 	v3d v(x, y, z);
 	v *= s;
 	quaternion q(c, v.x, v.y, v.z);
@@ -79,7 +79,7 @@ quaternion quaternion::fromAngleAxis(double a, double x, double y, double z)
 
 void dualquat::normalize()
 {
-	const double n = r.norm();
+	const math_float_t n = r.norm();
 
 	if(n == 0) return;
 
@@ -96,8 +96,8 @@ void dualquat::normalize()
 void dualquat::invert()
 {
 	/** TODO: Is it really? **/
-	double n = r.norm();
-	double rdd = dot(r, d);
+	math_float_t n = r.norm();
+	math_float_t rdd = dot(r, d);
 
 	r = ~r;
 	d = ~d;
@@ -140,7 +140,7 @@ dualquat dualquat::translate(const v3d& translation)
 	return ret;
 }
 
-dualquat dualquat::rotate(const v3d& rotationAxis, double angle)
+dualquat dualquat::rotate(const v3d& rotationAxis, math_float_t angle)
 {
 	dualquat ret;
 	ret.r = quaternion::fromAngleAxis(angle, rotationAxis);
@@ -148,7 +148,7 @@ dualquat dualquat::rotate(const v3d& rotationAxis, double angle)
 	return ret;
 }
 
-dualquat dualquat::translateThenRotate(const v3d& translation, const v3d& rotationAxis, double angle)
+dualquat dualquat::translateThenRotate(const v3d& translation, const v3d& rotationAxis, math_float_t angle)
 {
 	dualquat ret = dualquat::rotate(rotationAxis, angle);
 	ret *= dualquat::translate(translation);
@@ -156,7 +156,7 @@ dualquat dualquat::translateThenRotate(const v3d& translation, const v3d& rotati
 }
 
 
-dualquat dualquat::rotateThenTranslate(const v3d& translation, const v3d& rotationAxis, double angle)
+dualquat dualquat::rotateThenTranslate(const v3d& translation, const v3d& rotationAxis, math_float_t angle)
 {
 	dualquat ret = dualquat::translate(translation);
 	ret *= dualquat::rotate(rotationAxis, angle);
@@ -164,7 +164,7 @@ dualquat dualquat::rotateThenTranslate(const v3d& translation, const v3d& rotati
 }
 
 
-dualquat dualquat::rotateAboutPoint(const v3d& center, const v3d& rotationAxis, double angle)
+dualquat dualquat::rotateAboutPoint(const v3d& center, const v3d& rotationAxis, math_float_t angle)
 {
 	dualquat t = dualquat::translate(center);
 	return (t * dualquat::rotate(rotationAxis, angle)) * (~t);
@@ -175,7 +175,7 @@ dualquat dualquat::rotateAboutPoint(const v3d& center, const v3d& rotationAxis, 
 m4x4d dualquat::getMatrix() const
 {
 	m4x4d ret;
-	double k, l;
+	math_float_t k, l;
 
 	ret.m[0] = ret.m[5] = ret.m[10] = r.w*r.w;
 	k = r.x*r.x;

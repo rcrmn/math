@@ -16,10 +16,10 @@ class dualquat
 	public:
 
 		static dualquat translate(const v3d& translation);
-		static dualquat rotate(const v3d& rotationAxis, double angle);
-		static dualquat translateThenRotate(const v3d& translation, const v3d& rotationAxis, double angle);
-		static dualquat rotateThenTranslate(const v3d& translation, const v3d& rotationAxis, double angle);
-		static dualquat rotateAboutPoint(const v3d& center, const v3d& rotationAxis, double angle);
+		static dualquat rotate(const v3d& rotationAxis, math_float_t angle);
+		static dualquat translateThenRotate(const v3d& translation, const v3d& rotationAxis, math_float_t angle);
+		static dualquat rotateThenTranslate(const v3d& translation, const v3d& rotationAxis, math_float_t angle);
+		static dualquat rotateAboutPoint(const v3d& center, const v3d& rotationAxis, math_float_t angle);
 
 	public:
 		quaternion r, d;

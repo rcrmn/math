@@ -26,7 +26,7 @@ m4x4d m4x4d::identity()
 
 m4x4d& m4x4d::transpose()
 {
-	double x;
+	math_float_t x;
 	for(int f = 0; f < 4; ++f)
 	{
 		for(int c = 0; c < 4; ++c)
@@ -67,7 +67,7 @@ v3d operator* (const m4x4d& m, v3d v)
 		r.v[i] += m.m[4*i + 3];
 	}
 
-	double k = m.m[12] + m.m[13] + m.m[14] + m.m[15];
+	math_float_t k = m.m[12] + m.m[13] + m.m[14] + m.m[15];
 	
 	if(fabs(k - 1) > 0.000001)
 	{

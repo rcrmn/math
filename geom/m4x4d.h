@@ -4,6 +4,7 @@
 #define __M4x4D_H__
 
 #include <ostream>
+#include "conf.h"
 
 namespace math
 {
@@ -17,11 +18,11 @@ class m4x4d
 		static m4x4d identity();
 
 	public:
-		double m[16];
+		math_float_t m[16];
 
-		m4x4d() { for(int i = 0; i < 16; ++i) m[i] = 0; };
+		m4x4d() { for(int i = 0; i < 16; ++i) m[i] = 0; }
 
-		m4x4d(double* d) { for(int i = 0; i < 16; ++i) m[i] = d[i]; };
+		m4x4d(math_float_t* d) { for(int i = 0; i < 16; ++i) m[i] = d[i]; }
 
 
 		m4x4d(const m4x4d& b) { for(int i = 0; i < 16; ++i) m[i] = b.m[i]; }
@@ -43,8 +44,8 @@ class m4x4d
 			return *this;
 		}
 
-		m4x4d& operator*= (double k) { for(int i = 0; i < 16; ++i) m[i] *= k; return *this; }
-		m4x4d& operator/= (double k) { k = 1.0/k; (*this) *= k; return *this; }
+		m4x4d& operator*= (math_float_t k) { for(int i = 0; i < 16; ++i) m[i] *= k; return *this; }
+		m4x4d& operator/= (math_float_t k) { k = 1.0/k; (*this) *= k; return *this; }
 
 
 		m4x4d& transpose();
@@ -57,8 +58,8 @@ inline m4x4d operator* (m4x4d a, const m4x4d& b) { a *= b; return a; }
 
 inline m4x4d operator- (const m4x4d& a) { m4x4d b; b-=a; return b; }
 
-inline m4x4d operator* (m4x4d a, double k) { a *= k; return a; }
-inline m4x4d operator/ (m4x4d a, double k) { a /= k; return a; }
+inline m4x4d operator* (m4x4d a, math_float_t k) { a *= k; return a; }
+inline m4x4d operator/ (m4x4d a, math_float_t k) { a /= k; return a; }
 
 
 v3d operator* (v3d v, const m4x4d& m);

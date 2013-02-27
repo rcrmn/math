@@ -16,31 +16,31 @@ namespace math
 
 v3d& v3d::normalize()
 {
-	double d = x*x + y*y + z*z;
+	math_float_t d = x*x + y*y + z*z;
 
-	d = sqrt(d);
+	d = 1/sqrt(d);
 
-	x /= d;
-	y /= d;
-	z /= d;
+	x *= d;
+	y *= d;
+	z *= d;
 
 	return *this;
 }
 
-double v3d::sqlength() const
+math_float_t v3d::sqlength() const
 {
 	return (x*x + y*y + z*z);
 }
 
-double v3d::length() const
+math_float_t v3d::length() const
 {
 	return sqrt(x*x + y*y + z*z);
 }
 
 
-double operator% (const v3d& a, const v3d& b)
+math_float_t operator% (const v3d& a, const v3d& b)
 {
-	double d;
+	math_float_t d;
 	d = (a.x-b.x)*(a.x-b.x);
 	d += (a.y-b.y)*(a.y-b.y);
 	d += (a.z-b.z)*(a.z-b.z);
@@ -66,13 +66,13 @@ m3x3d m3x3d::identity()
 
 m3x3d& m3x3d::invert()
 {
-	double d = determinant();
+	math_float_t d = determinant();
 
 	if(fabs(d) > 0.0000001f )
 	{
 		m3x3d a(*this);
 		(*this) *= 0;
-		double s[4];
+		math_float_t s[4];
 		for(int f = 0; f < 3; ++f)
 		{
 			for(int c = 0; c < 3; ++c)
@@ -103,7 +103,7 @@ m3x3d& m3x3d::invert()
 
 m3x3d& m3x3d::transpose()
 {
-	double x;
+	math_float_t x;
 	for(int f = 0; f < 3; ++f)
 	{
 		for(int c = 0; c < 3; ++c)
@@ -116,7 +116,7 @@ m3x3d& m3x3d::transpose()
 	return *this;
 }
 
-double m3x3d::determinant() const
+math_float_t m3x3d::determinant() const
 {
 	return m[0]*m[4]*m[8] + m[1]*m[5]*m[6] + m[3]*m[7]*m[2] - (m[6]*m[4]*m[2] + m[3]*m[1]*m[8] + m[5]*m[7]*m[0]);
 }

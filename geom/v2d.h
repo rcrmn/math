@@ -2,7 +2,7 @@
 #define __V2D_H__
 
 #include <ostream>
-#include "conf.h"
+#include "../conf.h"
 
 namespace math
 {

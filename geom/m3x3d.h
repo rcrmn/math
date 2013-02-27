@@ -4,7 +4,7 @@
 #define __M3x3D_H__
 
 #include <ostream>
-#include "conf.h"
+#include "../conf.h"
 
 namespace math
 {

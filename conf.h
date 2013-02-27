@@ -1,5 +1,5 @@
-#ifndef CONF_H
-#define CONF_H
+#ifndef __ADV_MATH_CONF_H__
+#define __ADV_MATH_CONF_H__
 
 namespace math
 {

@@ -3,7 +3,7 @@
 #define __QUATERNION_H__
 
 #include <ostream>
-#include "conf.h"
+#include "../conf.h"
 
 #include "v3d.h"
 
